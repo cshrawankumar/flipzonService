@@ -3,6 +3,15 @@ var amazon = require('amazon-product-api');
 var express = require('express');
 var app = express();
 var body;
+var util = require('util'),
+OperationHelper = require('apac').OperationHelper;
+ 
+var opHelper = new OperationHelper({
+    awsId:     'AKIAI5EADFA24M2WJJTA',
+    awsSecret: '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',
+    assocId:   'cshrawankumar-21',
+    locale: 'IN'
+});
 
 var fkclient = affiliate.createClient({
     FkAffId: 'csaikiran',
@@ -11,12 +20,10 @@ var fkclient = affiliate.createClient({
 });
 
 var amazonclient = amazon.createClient({
-    awsId: "aws ID",
-    awsSecret: "aws Secret",
-    awsTag: "aws Tag"
+    awsId: "AKIAI5EADFA24M2WJJTA",
+    awsSecret: "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",
+    awsTag: "cshrawankumar-21"
 });
-
-
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -36,11 +43,33 @@ app.get('/search',(req,res)=>{
       }, function(err, results){
         if(err){
           console.log(err);
+          res.send(JSON.parse(err));
         } else{
             res.send(JSON.parse(results));
         }
     });
 });
+
+app.get('/search/amazon',(req,res)=>{
+
+    opHelper.execute('ItemSearch', {
+        'SearchIndex': 'All',
+        'Keywords': req.query.query || "All",
+        'ResponseGroup': 'ItemAttributes',       
+    }, function(error, results) {
+        // if (error) { console.log('Error: ' + error + "\n") }
+        // console.log("Results:\n" + util.inspect(results) + "\n");
+        // res.send(results);
+        if(error){
+            console.log(error);
+            res.send(JSON.stringify(error));
+          } else{
+              res.send(JSON.stringify(results));
+          }
+    });
+});
+
+
 
 app.listen(3000,function(req,res){
     console.log('server started!!');

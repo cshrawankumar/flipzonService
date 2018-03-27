@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "amazon-product-api": "^0.4.4",
+    "apac": "^3.0.2",
     "express": "^4.16.3",
     "express-prettify": "0.0.10",
     "flipkart-affiliate-client": "^1.0.1",
