@@ -1,5 +1,4 @@
 var affiliate = require('flipkart-affiliate-client');
-var amazon = require('amazon-product-api');
 var express = require('express');
 var app = express();
 var body;
@@ -17,12 +16,6 @@ var fkclient = affiliate.createClient({
     FkAffId: 'csaikiran',
     FkAffToken: 'cc45070647474e258efbd2c01955b6d3',
     responseType: 'json'
-});
-
-var amazonclient = amazon.createClient({
-    awsId: "AKIAI5EADFA24M2WJJTA",
-    awsSecret: "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",
-    awsTag: "cshrawankumar-21"
 });
 
 app.use(function(req, res, next) {
@@ -51,15 +44,11 @@ app.get('/search',(req,res)=>{
 });
 
 app.get('/search/amazon',(req,res)=>{
-
     opHelper.execute('ItemSearch', {
         'SearchIndex': 'All',
         'Keywords': req.query.query || "All",
-        'ResponseGroup': 'ItemAttributes',       
+        'ResponseGroup': 'Images,ItemAttributes,Offers',       
     }, function(error, results) {
-        // if (error) { console.log('Error: ' + error + "\n") }
-        // console.log("Results:\n" + util.inspect(results) + "\n");
-        // res.send(results);
         if(error){
             console.log(error);
             res.send(JSON.stringify(error));
